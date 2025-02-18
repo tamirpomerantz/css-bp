@@ -3,95 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Localoom - Local Screen Recording Made Simple</title>
-    <link rel="stylesheet" href="style.css">
+    <title>m.css - Minimalist CSS Framework</title>
+    <link rel="stylesheet" href="page.css">
+    <link rel="stylesheet" href="m.css">
+    <style>
+        .class-panel {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: var(--color-background);
+            border-left: 1px solid var(--color-border);
+            padding: var(--spacing-l);
+            transform: translateX(0); /* Always visible */
+            z-index: 1000;
+            overflow-y: auto;
+            resize: horizontal;
+            min-width: 250px;
+            max-width: 600px;
+        }
+
+        .class-panel::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            cursor: ew-resize;
+            background: transparent;
+        }
+
+        .class-panel.resizing {
+            user-select: none;
+            cursor: ew-resize;
+        }
+
+        [contenteditable] {
+            outline: 1px dashed transparent;
+            transition: outline-color 0.2s ease;
+            cursor: pointer;
+        }
+
+        [contenteditable]:hover {
+            outline-color: var(--color-primary);
+        }
+
+        [contenteditable]:focus {
+            outline: 2px solid var(--color-primary);
+        }
+
+        .class-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            background: var(--color-background-alt);
+            border-radius: var(--radius-s);
+            margin: 4px;
+            font-size: var(--font-size-s);
+        }
+
+        .element-tree {
+            /* font-family: monospace; */
+            width: max-content;
+            font-size: var(--font-size-button);
+            color: var(--color-text-lite);
+            margin-bottom: var(--spacing-m);
+            padding-bottom: var(--spacing-s);
+            border-bottom: 1px solid var(--color-border);
+            /* white-space: pre-wrap; */
+            display: flex;
+            gap: 8px;
+            flex-direction: column;
+        }
+
+        .element-tree-item {
+            display: block;
+        }
+
+        .element-tree-item.active {
+            color: var(--color-primary);
+            font-weight: bold;
+        }
+
+        .tree-item {
+            display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;        }
+
+        .selected-classes {
+            margin-top: var(--spacing-m);
+            padding-top: var(--spacing-s);
+            border-top: 1px solid var(--color-border);
+        }
+
+        /* Update body margin to use CSS variable */
+        body {
+            margin-right: var(--panel-width, 300px);
+            transition: margin-right 0.1s ease;
+        }
+
+        .variables-list {
+            font-family: monospace;
+            font-size: var(--font-size-small);
+            color: var(--color-text-lite);
+            margin-top: var(--spacing-s);
+        }
+
+        .variable-item {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-xs) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .variable-name {
+            color: var(--color-primary);
+        }
+
+        .variable-value {
+            color: var(--color-text-secondary);
+        }
+
+        .variable-overrides {
+            margin-top: var(--spacing-l);
+            padding-top: var(--spacing-m);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .override-control {
+            margin-bottom: var(--spacing-s);
+        }
+
+        .override-inputs {
+            display: flex;
+            gap: var(--spacing-xs);
+            margin-top: var(--spacing-xs);
+        }
+
+        .variable-input {
+            flex: 1;
+            padding: var(--spacing-xs);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-s);
+            background: var(--color-background);
+            color: var(--color-text);
+            font-size: var(--font-size-small);
+        }
+
+        .color-picker {
+            width: 40px;
+            padding: 0;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-s);
+            background: var(--color-background);
+        }
+
+        .class-section {
+            margin-bottom: var(--spacing-m);
+        }
+
+        .variable-group {
+            margin-left: var(--spacing-s);
+            border-left: 2px solid var(--color-border);
+            padding-left: var(--spacing-s);
+        }
+
+        .clickable-tag {
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .clickable-tag:hover {
+            background: var(--color-primary);
+            color: var(--color-text-negative);
+        }
+
+        .clickable-tag.active {
+            background: var(--color-primary);
+            color: var(--color-text-negative);
+        }
+
+    
+        .indent {
+            color:transparent
+        }
+        .ellipsis {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container header__container">
-            <a href="/" class="header__logo">Localoom</a>
-            <nav class="header__nav">
-                <ul class="header__nav-list">
-                    <li><a href="#features" class="button button--link text-small">Features</a></li>
-                    <li><a href="#how-it-works" class="button button--link text-small">How it Works</a></li>
-                    <li><a href="#privacy" class="button button--link text-small">Privacy</a></li>
+    <div class="class-panel" contenteditable="false">
+        <h3 class="text-title">Element Tree</h3>
+        <div id="elementTree" class="element-tree"></div>
+        <div class="selected-classes">
+            <h4 class="text-small">Selected Element Classes</h4>
+            <div id="classDisplay" class="text-small"></div>
+        </div>
+        <div class="css-variables">
+            <h4 class="text-small">CSS Variables</h4>
+            <div id="variablesDisplay" class="variables-list"></div>
+        </div>
+    </div>
+
+    <header class="header" contenteditable="true" data-classes="header">
+        <div class="container header__container" contenteditable="true" data-classes="container header__container">
+            <a href="/" class="header__logo" contenteditable="true" data-classes="header__logo">m.css</a>
+            <nav class="header__nav" contenteditable="true" data-classes="header__nav">
+                <ul class="header__nav-list" contenteditable="true" data-classes="header__nav-list">
+                    <li><a href="#features" class="button button--link text-small" contenteditable="true" data-classes="button button--link text-small">Features</a></li>
+                    <li><a href="#components" class="button button--link text-small" contenteditable="true" data-classes="button button--link text-small">Components</a></li>
+                    <li><a href="#start" class="button button--link text-small" contenteditable="true" data-classes="button button--link text-small">Get Started</a></li>
                 </ul>
             </nav>
-            <div class="header__cta">
-                <button class="button button--secondary text-small">Log In</button>
-                <button class="button button--primary text-small">Start Recording</button>
+            <div class="header__cta" contenteditable="true" data-classes="header__cta">
+                <a href="https://github.com/your-repo/m.css" class="button button--primary text-small" contenteditable="true" data-classes="button button--primary text-small">GitHub</a>
             </div>
         </div>
     </header>
 
     <main>
-        <section class="hero">
-            <div class="container hero__container">
-                <div class="hero__content">
-                    <h1 class="hero__title text-title-xl">Record Your Screen. Locally. Securely.</h1>
-                    <p class="hero__subtitle text-title">Create, save, and share screen recordings without cloud storage. Your content stays on your device.</p>
-                    <div class="hero__buttons">
-                        <button class="button button--primary button--large text-small">Start Recording Now</button>
-                        <button class="button button--ghost button--large text-small">Watch Demo</button>
+        <section class="hero" contenteditable="true" data-classes="hero">
+            <div class="container hero__container" contenteditable="true" data-classes="container hero__container">
+                <div class="hero__content" contenteditable="true" data-classes="hero__content">
+                    <h3 class="text-small text-color-secondary" contenteditable="true" data-classes="text-small text-color-secondary">Introducing m.css</h3>
+                    <h1 class="hero__title text-title-xl" contenteditable="true" data-classes="hero__title text-title-xl">Write less CSS, build more</h1>
+                    <p class="hero__subtitle text-title" contenteditable="true" data-classes="hero__subtitle text-title">A utility-first CSS framework that empowers you to create beautiful, responsive interfaces with minimal effort.</p>
+                    <div class="hero__buttons" contenteditable="true" data-classes="hero__buttons">
+                        <button class="button button--primary button--large text-small" contenteditable="true" data-classes="button button--primary button--large text-small">Quick Start Guide</button>
+                        <button class="button button--ghost button--large text-small" contenteditable="true" data-classes="button button--ghost button--large text-small">View Components</button>
                     </div>
-                </div>
-                <div class="hero__image">
-                    <img src="placeholder-hero.jpg" alt="Localoom interface preview" class="hero__img">
                 </div>
             </div>
         </section>
 
         <section class="features" id="features">
             <div class="container">
-                <h2 class="features__title text-title text-center">Why Choose Localoom?</h2>
+                <h2 class="features__title text-title text-center">Why Choose m.css?</h2>
                 <div class="features__grid">
                     <div class="feature-card">
-                        <h3 class="feature-card__title text-small text-color-secondary">100% Private</h3>
-                        <p class="feature-card__text text-body">All recordings stay on your device. No cloud storage, no data sharing.</p>
+                        <div class="feature-card__icon">🎨</div>
+                        <h3 class="feature-card__title text-title">Utility-First</h3>
+                        <p class="text-body">Build custom designs without leaving your HTML, using utility classes that are easy to understand and maintain.</p>
                     </div>
                     <div class="feature-card">
-                        <h3 class="feature-card__title text-small text-color-secondary">Lightning Fast</h3>
-                        <p class="feature-card__text text-body">No upload waiting time. Start sharing instantly.</p>
+                        <div class="feature-card__icon">⚡️</div>
+                        <h3 class="feature-card__title text-title">Lightning Fast</h3>
+                        <p class="text-body">Minimal file size, no unnecessary styles, and optimized for production environments.</p>
                     </div>
                     <div class="feature-card">
-                        <h3 class="feature-card__title text-small text-color-secondary">Simple Editor</h3>
-                        <p class="feature-card__text text-body">Quick trim, cut, and annotate tools built right in.</p>
+                        <div class="feature-card__icon">🎯</div>
+                        <h3 class="feature-card__title text-title">Customizable</h3>
+                        <p class="text-body">Easily customize colors, spacing, typography, and more using CSS variables.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="how-it-works" id="how-it-works">
+        <section class="how-it-works" id="components">
             <div class="container">
-                <h2 class="how-it-works__title text-title">How It Works</h2>
+                <h2 class="how-it-works__title text-title-l text-center">Core Components</h2>
                 <div class="steps">
                     <div class="step">
-                        <div class="step__number text-body">1</div>
-                        <h3 class="step__title text-body">Download Localoom</h3>
-                        <p class="step__text text-body text-color-secondary">Get our lightweight app for your desktop.</p>
+                        <div class="step__number">1</div>
+                        <h3 class="text-title-s">Typography System</h3>
+                        <p class="text-body">Consistent text scales and responsive typography with pre-built utility classes.</p>
                     </div>
                     <div class="step">
-                        <div class="step__number text-body">2</div>
-                        <h3 class="step__title text-body">Record Your Screen</h3>
-                        <p class="step__text text-body text-color-secondary">Click record and capture anything on your screen.</p>
+                        <div class="step__number">2</div>
+                        <h3 class="text-title-s">Flexible Grid</h3>
+                        <p class="text-body">Responsive grid system that adapts to any screen size and layout needs.</p>
                     </div>
                     <div class="step">
-                        <div class="step__number text-body">3</div>
-                        <h3 class="step__title text-body">Save & Share</h3>
-                        <p class="step__text text-body text-color-secondary">Your recording is saved locally. Share via link or file.</p>
+                        <div class="step__number">3</div>
+                        <h3 class="text-title-s">Modern Components</h3>
+                        <p class="text-body">Beautiful, accessible components that work seamlessly together.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="cta-section " >
+        <section class="cta-section" id="start">
             <div class="container">
                 <div class="cta-box color-scheme-reverse">
-                    <h2 class="cta-box__title text-title">Ready to Start Recording?</h2>
-                    <p class="cta-box__text text-body">Join thousands of users who trust Localoom for their screen recording needs.</p>
+                    <h2 class="cta-box__title text-title">Start Building Today</h2>
+                    <p class="cta-box__text text-body">Join developers who are creating beautiful interfaces with m.css</p>
                     <div class="cta-box__buttons">
-                        <button class="button button--primary button--large text-small">Download Now</button>
-                        <button class="button button--secondary button--large text-small">View Documentation</button>
+                        <button class="button button--primary button--large text-small">Install via NPM</button>
+                        <button class="button button--secondary button--large text-small">Read Docs</button>
                     </div>
                 </div>
             </div>
@@ -101,35 +304,463 @@
     <footer class="footer">
         <div class="container footer__container">
             <div class="footer__brand">
-                <a href="/" class="footer__logo">Localoom</a>
-                <p class="footer__tagline text-small">Local Screen Recording Made Simple</p>
+                <a href="/" class="footer__logo">m.css</a>
+                <p class="footer__tagline text-small">Simple. Powerful. Customizable.</p>
             </div>
             <div class="footer__links">
                 <div class="footer__column">
-                    <h4 class="footer__heading text-small">Product</h4>
+                    <h4 class="footer__heading text-small">Documentation</h4>
                     <ul class="footer__list">
-                        <li><a href="#" class="footer__link text-small">Download</a></li>
-                        <li><a href="#" class="footer__link text-small">Features</a></li>
-                        <li><a href="#" class="footer__link text-small">Security</a></li>
+                        <li><a href="#" class="footer__link text-small">Installation</a></li>
+                        <li><a href="#" class="footer__link text-small">Components</a></li>
+                        <li><a href="#" class="footer__link text-small">Utilities</a></li>
                     </ul>
                 </div>
                 <div class="footer__column">
-                    <h4 class="footer__heading text-small">Company</h4>
+                    <h4 class="footer__heading text-small">Contact</h4>
                     <ul class="footer__list">
-                        <li><a href="#" class="footer__link text-small">About</a></li>
-                        <li><a href="#" class="footer__link text-small">Blog</a></li>
-                        <li><a href="#" class="footer__link text-small">Contact</a></li>
+                        <li><a href="#" class="footer__link text-small">tamirp.com</a></li>
+                        <li><a href="#" class="footer__link text-small">tamirp@gmail.com</a></li>
+                        <li><a href="#" class="footer__link text-small">@tamirpo</a></li>
                     </ul>
                 </div>
-                <div class="footer__column">
-                    <h4 class="footer__heading text-small">Legal</h4>
-                    <ul class="footer__list">
-                        <li><a href="#" class="footer__link text-small">Privacy</a></li>
-                        <li><a href="#" class="footer__link text-small">Terms</a></li>
-                    </ul>
-                </div>
+           
             </div>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const panel = document.querySelector('.class-panel');
+            const classDisplay = document.getElementById('classDisplay');
+            const elementTree = document.getElementById('elementTree');
+            const variablesDisplay = document.getElementById('variablesDisplay');
+            
+            let cssContent = '';
+            let cssLoaded = false;
+            let currentVariablesByClass = null;
+            let activeFilter = null;
+
+            // Add resize functionality
+            let isResizing = false;
+            let startX;
+            let startWidth;
+
+            function initResize(e) {
+                // Only start resize if clicking near the left edge
+                const clickPosition = e.clientX - panel.getBoundingClientRect().left;
+                if (clickPosition > 10) return; // Only allow resize within 10px of the left edge
+
+                isResizing = true;
+                startX = e.clientX;
+                startWidth = parseInt(getComputedStyle(panel).width, 10);
+                
+                panel.classList.add('resizing');
+                
+                // Prevent text selection while resizing
+                document.body.style.userSelect = 'none';
+                
+                // Add event listeners for drag and end
+                document.addEventListener('mousemove', resize);
+                document.addEventListener('mouseup', stopResize);
+            }
+
+            function resize(e) {
+                if (!isResizing) return;
+                
+                const width = startWidth - (e.clientX - startX);
+                const newWidth = Math.min(Math.max(250, width), 600);
+                
+                panel.style.width = `${newWidth}px`;
+                document.documentElement.style.setProperty('--panel-width', `${newWidth}px`);
+            }
+
+            function stopResize() {
+                isResizing = false;
+                panel.classList.remove('resizing');
+                document.body.style.userSelect = '';
+                
+                // Remove event listeners
+                document.removeEventListener('mousemove', resize);
+                document.removeEventListener('mouseup', stopResize);
+            }
+
+            // Initialize panel width CSS variable
+            document.documentElement.style.setProperty('--panel-width', '300px');
+            
+            // Add mouse down event listener to panel
+            panel.addEventListener('mousedown', initResize);
+
+            // Load CSS file content
+            async function loadCSSContent() {
+                if (cssLoaded) return;
+                
+                try {
+                    // Try to load both CSS files
+                    const responses = await Promise.all([
+                        fetch('m.css'),
+                        fetch('page.css')
+                    ]);
+                    
+                    const contents = await Promise.all(
+                        responses.map(response => response.text())
+                    );
+                    
+                    cssContent = contents.join('\n');
+                    cssLoaded = true;
+                    console.log('CSS loaded successfully');
+                } catch (error) {
+                    console.error('Error loading CSS:', error);
+                    // Fallback: try to get styles from document
+                    const styleSheets = Array.from(document.styleSheets);
+                    cssContent = styleSheets.map(sheet => {
+                        try {
+                            return Array.from(sheet.cssRules)
+                                .map(rule => rule.cssText)
+                                .join('\n');
+                        } catch (e) {
+                            console.warn('Could not read stylesheet:', e);
+                            return '';
+                        }
+                    }).join('\n');
+                    
+                    if (cssContent) {
+                        cssLoaded = true;
+                        console.log('CSS loaded from document stylesheets');
+                    }
+                }
+            }
+
+            // Load CSS and then process click
+            async function processElementClick(target) {
+                if (!cssLoaded) {
+                    await loadCSSContent();
+                }
+                
+                // Get element tree
+                const tree = getElementTree(target);
+                elementTree.innerHTML = displayElementTree(tree);
+                
+                // Get and display CSS variables
+                const variables = getComputedVariables(target);
+                displayVariables(variables);
+            }
+
+            function getAllClassesForElement(element) {
+                const classes = new Set();
+                
+                // Get classes from the current element
+                if (element.className) {
+                    element.className.split(' ').forEach(cls => classes.add(cls));
+                }
+                
+                // Get classes from parent elements (for inheritance)
+                let parent = element.parentElement;
+                while (parent && parent !== document.body) {
+                    if (parent.className) {
+                        parent.className.split(' ').forEach(cls => classes.add(cls));
+                    }
+                    parent = parent.parentElement;
+                }
+                
+                return Array.from(classes);
+            }
+
+            function findVariablesInCSS(classes) {
+                const variablesByClass = new Map(); // Map to store variables grouped by class
+
+                // Helper function to extract variable names from a CSS value
+                function extractVariables(cssValue) {
+                    const matches = cssValue.match(/var\((--[^,)]+)/g);
+                    if (matches) {
+                        return matches.map(match => match.slice(4)); // Remove 'var('
+                    }
+                    return [];
+                }
+
+                // Create regex patterns for each class
+                classes.forEach(className => {
+                    const escapedClass = className.replace(/([.*+?^${}()|\[\]\\])/g, '\\$1');
+                    // Add word boundaries to match exact class names
+                    const pattern = new RegExp(`\\.${escapedClass}(?:[^a-zA-Z0-9-_]|$)[^{]*{[^}]*}`, 'g');
+                    
+                    const matches = cssContent.match(pattern);
+                    if (matches) {
+                        const classVariables = [];
+                        
+                        matches.forEach(rule => {
+                            // Extract property-value pairs
+                            const declarations = rule.match(/[^{]*{([^}]*)}/)[1];
+                            const properties = declarations.split(';');
+                            
+                            properties.forEach(prop => {
+                                if (prop.includes('var(--')) {
+                                    const [property, value] = prop.split(':').map(s => s.trim());
+                                    if (property && value) {
+                                        const vars = extractVariables(value);
+                                        vars.forEach(varName => {
+                                            // Check if this variable is already added for this property
+                                            const exists = classVariables.some(v => 
+                                                v.property === property && 
+                                                v.variable === varName &&
+                                                v.rule === rule.match(/[^{]*/)[0].trim()
+                                            );
+                                            
+                                            if (!exists) {
+                                                const computedValue = getComputedStyle(document.documentElement)
+                                                    .getPropertyValue(varName).trim();
+                                                classVariables.push({
+                                                    property,
+                                                    variable: varName,
+                                                    computedValue,
+                                                    rule: rule.match(/[^{]*/)[0].trim()
+                                                });
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        });
+
+                        if (classVariables.length > 0) {
+                            variablesByClass.set(className, classVariables);
+                        }
+                    }
+                });
+
+                return variablesByClass;
+            }
+
+            // Add this new function to handle variable overrides
+            function handleVariableOverride(variable, value) {
+                document.documentElement.style.setProperty(variable, value);
+            }
+
+            function displayVariables(variablesByClass, filterClass = null) {
+                if (variablesByClass.size === 0) {
+                    variablesDisplay.innerHTML = '<div class="variable-item">No CSS variables found on this element</div>';
+                    return;
+                }
+
+                // Store current state
+                currentVariablesByClass = variablesByClass;
+                activeFilter = filterClass;
+
+                const html = [];
+                
+                // Create override controls section if it doesn't exist
+                if (!document.getElementById('variableOverrides')) {
+                    const overridesSection = document.createElement('div');
+                    overridesSection.id = 'variableOverrides';
+                    overridesSection.className = 'variable-overrides';
+                    document.querySelector('.css-variables').appendChild(overridesSection);
+                }
+
+                // Filter classes if a specific class is selected
+                const classEntries = Array.from(variablesByClass.entries());
+                const filteredEntries = filterClass 
+                    ? classEntries.filter(([className]) => className === filterClass)
+                    : classEntries;
+
+                for (const [className, variables] of filteredEntries) {
+                    html.push(`
+                        <div class="class-section">
+                            <h4 class="text-small" style="margin: var(--spacing-s) 0; color: var(--color-text-secondary)">
+                                ${className}
+                            </h4>
+                            <div class="variable-group">
+                                ${variables.map(({property, variable, computedValue, rule}) => `
+                                    <div class="variable-item">
+                                        <div>
+                                            <span>${property}: <span class="variable-name ellipsis">${variable}</span></span>
+                                        </div>
+                                        <span class="variable-value ellipsis">${computedValue}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `);
+                }
+
+                variablesDisplay.innerHTML = html.join('');
+
+                // Update override controls with filtered variables
+                const overridesSection = document.getElementById('variableOverrides');
+                const uniqueVariables = new Set();
+                
+                // Only include variables from filtered classes
+                filteredEntries.forEach(([_, variables]) => {
+                    variables.forEach(({variable}) => uniqueVariables.add(variable));
+                });
+
+                overridesSection.innerHTML = `
+                    <h4 class="text-small" style="margin: var(--spacing-m) 0 var(--spacing-s)">
+                        ${filterClass ? `Override Variables for .${filterClass}` : 'Override Variables'}
+                    </h4>
+                    ${Array.from(uniqueVariables).map(variable => {
+                        const currentValue = getComputedStyle(document.documentElement)
+                            .getPropertyValue(variable).trim();
+                        return `
+                            <div class="override-control">
+                                <label class="text-small">${variable}</label>
+                                <div class="override-inputs">
+                                    <input type="text" 
+                                           value="${currentValue}"
+                                           data-variable="${variable}"
+                                           class="variable-input"
+                                           style="font-family: monospace">
+                                    ${variable.includes('color') ? `
+                                        <input type="color" 
+                                               value="${currentValue.startsWith('#') ? currentValue : '#000000'}"
+                                               data-variable="${variable}"
+                                               class="color-picker">
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                `;
+
+                // Add event listeners for override inputs
+                document.querySelectorAll('.variable-input, .color-picker').forEach(input => {
+                    input.addEventListener('change', (e) => {
+                        const variable = e.target.dataset.variable;
+                        const value = e.target.value;
+                        handleVariableOverride(variable, value);
+                        
+                        // Sync text input and color picker if they exist
+                        if (e.target.type === 'color') {
+                            const textInput = document.querySelector(`.variable-input[data-variable="${variable}"]`);
+                            if (textInput) textInput.value = value;
+                        } else {
+                            const colorPicker = document.querySelector(`.color-picker[data-variable="${variable}"]`);
+                            if (colorPicker && value.startsWith('#')) colorPicker.value = value;
+                        }
+                    });
+                });
+            }
+
+            function getComputedVariables(element) {
+                const classes = getAllClassesForElement(element);
+                return findVariablesInCSS(classes);
+            }
+
+            // Make all elements with classes contenteditable and add data-classes
+            document.querySelectorAll('*[class]').forEach(element => {
+                // Skip elements inside the class panel
+                if (!panel.contains(element)) {
+                    element.setAttribute('contenteditable', 'true');
+                    element.setAttribute('data-classes', element.className);
+                }
+            });
+
+            function getElementTree(element) {
+                const tree = [];
+                let currentElement = element;
+                
+                // Start from the clicked element and go up to body
+                while (currentElement && currentElement !== document.body) {
+                    const classes = currentElement.className;
+                    if (classes) { // Only add elements that have classes
+                        tree.unshift({
+                            tag: currentElement.tagName.toLowerCase(),
+                            classes: classes,
+                            isTarget: currentElement === element
+                        });
+                    }
+                    currentElement = currentElement.parentElement;
+                }
+                
+                return tree;
+            }
+
+            function displayElementTree(tree) {
+                return tree.map((item, index) => {
+                    const indent = `<span class="indent">__</span>`.repeat(index);
+                    const arrow = index > 0 ? '↳' : '';
+                    const classes = item.classes 
+                        ? ' ' + item.classes.split(' ')
+                            .map(cls => `
+                                <span class="m-tag clickable-tag" data-class="${cls}">
+                                    .${cls}
+                                </span>
+                            `)
+                            .join(' ')
+                        : '';
+                    const className = item.isTarget ? 'element-tree-item active' : 'element-tree-item';
+                    return `
+                        <div class="tree-item" data-tree-item>
+                            ${indent}${arrow}<span class="m-tag">&lt;${item.tag}&gt;${classes}</span>
+                        </div>
+                    `;
+                }).join('\n');
+            }
+
+            // Handle click events
+            document.addEventListener('click', (e) => {
+                // Handle clicks on class tags in the tree
+                if (e.target.classList.contains('clickable-tag')) {
+                    e.stopPropagation();
+                    const className = e.target.dataset.class;
+                    
+                    // Remove active state from all tags
+                    document.querySelectorAll('.clickable-tag').forEach(tag => {
+                        tag.classList.remove('active');
+                    });
+
+                    // If clicking the same class again or clicking outside, remove filter
+                    if (activeFilter === className) {
+                        activeFilter = null;
+                    } else {
+                        // Add active state to clicked tag
+                        e.target.classList.add('active');
+                        activeFilter = className;
+                    }
+
+                    // Redisplay variables with filter
+                    if (currentVariablesByClass) {
+                        displayVariables(currentVariablesByClass, activeFilter);
+                    }
+                    return;
+                }
+
+                // Handle clicks on tree items (but not on tags)
+                if (e.target.closest('[data-tree-item]')) {
+                    if (!e.target.classList.contains('clickable-tag')) {
+                        // Remove active state from all tags
+                        document.querySelectorAll('.clickable-tag').forEach(tag => {
+                            tag.classList.remove('active');
+                        });
+                        
+                        // Reset to unfiltered view
+                        if (currentVariablesByClass) {
+                            activeFilter = null;
+                            displayVariables(currentVariablesByClass);
+                        }
+                    }
+                    return;
+                }
+
+                // Skip if clicking inside the panel
+                if (panel.contains(e.target)) {
+                    return;
+                }
+
+                // Original element click handling
+                let target = e.target;
+                while (target && !target.className && target !== document.body) {
+                    target = target.parentElement;
+                }
+
+                if (target && target.className) {
+                    e.stopPropagation();
+                    processElementClick(target);
+                }
+            });
+
+            // Initial load
+            loadCSSContent();
+        });
+    </script>
 </body>
 </html>
