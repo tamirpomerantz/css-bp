@@ -158,6 +158,17 @@ html {
     }
 }
 
+
+::-moz-selection { /* Code for Firefox */
+    background: color-mix(in srgb, var(--color-spark) 60%, transparent);
+  }
+  
+  ::selection {
+    background: color-mix(in srgb, var(--color-spark) 60%, transparent);
+  }
+  
+
+
 /* Reset & Base Styles */
 * {
     margin: 0;
