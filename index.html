@@ -15,7 +15,6 @@
             height: 100vh;
             background: var(--color-background);
             border-left: 1px solid var(--color-border);
-            padding: var(--spacing-l);
             transform: translateX(0); /* Always visible */
             z-index: 1000;
             overflow-y: auto;
@@ -64,17 +63,14 @@
         }
 
         .element-tree {
-            /* font-family: monospace; */
-            width: max-content;
+            width: 100%;
+            padding: 30px;
             font-size: var(--font-size-button);
             color: var(--color-text-lite);
-            margin-bottom: var(--spacing-m);
-            padding-bottom: var(--spacing-s);
-            border-bottom: 1px solid var(--color-border);
-            /* white-space: pre-wrap; */
             display: flex;
             gap: 8px;
             flex-direction: column;
+            background-color: color-mix(in srgb, var(--color-base) 12%, transparent);;
         }
 
         .element-tree-item {
@@ -92,11 +88,11 @@
     flex-direction: row;
     justify-content: flex-start;        }
 
-        .selected-classes {
+        /* .selected-classes {
             margin-top: var(--spacing-m);
             padding-top: var(--spacing-s);
             border-top: 1px solid var(--color-border);
-        }
+        } */
 
         /* Update body margin to use CSS variable */
         body {
@@ -105,21 +101,22 @@
         }
 
         .variables-list {
-            font-family: monospace;
             font-size: var(--font-size-small);
             color: var(--color-text-lite);
-            margin-top: var(--spacing-s);
         }
 
         .variable-item {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: var(--spacing-xs) 0;
-            border-bottom: 1px solid var(--color-border);
+            gap: var(--spacing-m);
         }
 
         .variable-name {
             color: var(--color-primary);
+            font-family: monospace;
+            font-size: var(--font-size-small);
         }
 
         .variable-value {
@@ -127,14 +124,31 @@
         }
 
         .variable-overrides {
-            margin-top: var(--spacing-l);
-            padding-top: var(--spacing-m);
-            border-top: 1px solid var(--color-border);
+            padding-top: var(--spacing-l);
         }
 
         .override-control {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-s);
             margin-bottom: var(--spacing-s);
         }
+
+        .variables-list, .variable-overrides, .main-colors {
+            padding: var(--spacing-l);
+        }
+
+        .variables-list {
+            background-color: color-mix(in srgb, var(--color-base) 9%, transparent);;
+        }
+
+        .variable-overrides {
+            background-color: color-mix(in srgb, var(--color-base) 5%, transparent);;
+        }
+        .main-colors {
+            background-color: color-mix(in srgb, var(--color-base) 0%, transparent);;
+        }
+
 
         .override-inputs {
             display: flex;
@@ -142,32 +156,48 @@
             margin-top: var(--spacing-xs);
         }
 
-        .variable-input {
-            flex: 1;
-            padding: var(--spacing-xs);
-            border: 1px solid var(--color-border);
+        .variable-input, .color-input {
+            width: 100px;
+            text-align: right;
+        }
+        input {
+            padding: var(--spacing-xs) var(--spacing-s);
+            border: 1px solid transparent;
             border-radius: var(--radius-s);
-            background: var(--color-background);
+            background: var(--color-background-alt);
             color: var(--color-text);
             font-size: var(--font-size-small);
+            transition: var(--transition-fast);
+  
+        }
+        input:hover {
+            border-color: var(--color-primary);
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--color-primary);
         }
 
-        .color-picker {
-            width: 40px;
-            padding: 0;
+
+        .color-control {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-s);
+            margin-bottom: var(--spacing-s);
+        }
+
+        .color-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
             border: 1px solid var(--color-border);
-            border-radius: var(--radius-s);
-            background: var(--color-background);
         }
 
-        .class-section {
-            margin-bottom: var(--spacing-m);
-        }
-
-        .variable-group {
-            margin-left: var(--spacing-s);
-            border-left: 2px solid var(--color-border);
-            padding-left: var(--spacing-s);
+        .color-name {
+            flex: 1;
+            color: var(--color-primary);
+            font-family: monospace;
+            font-size: var(--font-size-small);
         }
 
         .clickable-tag {
@@ -189,25 +219,53 @@
         .indent {
             color:transparent
         }
+        .indent-arrow {
+            padding-right: var(--spacing-xs);
+        }
         .ellipsis {
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
         }
+
+      
+
+
+        .mono-font {
+            font-family: monospace;
+        }
     </style>
 </head>
 <body>
     <div class="class-panel" contenteditable="false">
-        <h3 class="text-title">Element Tree</h3>
         <div id="elementTree" class="element-tree"></div>
-        <div class="selected-classes">
+        <!-- <div class="selected-classes">
             <h4 class="text-small">Selected Element Classes</h4>
             <div id="classDisplay" class="text-small"></div>
-        </div>
+        </div> -->
         <div class="css-variables">
-            <h4 class="text-small">CSS Variables</h4>
-            <div id="variablesDisplay" class="variables-list"></div>
+            <!-- <h4 class="text-small">CSS Variables</h4> -->
+            <div id="variablesDisplay" class="variables-list mono-font"></div>
         </div>
+        <div class="main-colors">
+            <h4 class="text-small text-color-secondary mono-font" style="margin: var(--spacing-m) 0 var(--spacing-s)">Main Colors</h4>
+            <div class="color-control">
+                <div class="color-dot" style="background: var(--color-black)"></div>
+                <span class="color-name">--color-black</span>
+                <input type="text" data-variable="--color-black" class="color-input mono-font" value="#010c0f">
+            </div>
+            <div class="color-control">
+                <div class="color-dot" style="background: var(--color-spark)"></div>
+                <span class="color-name">--color-spark</span>
+                <input type="text" data-variable="--color-spark" class="color-input mono-font" value="#FB5010">
+            </div>
+            <div class="color-control">
+                <div class="color-dot" style="background: var(--color-white)"></div>
+                <span class="color-name">--color-white</span>
+                <input type="text" data-variable="--color-white" class="color-input mono-font" value="#FFFFFF">
+            </div>
+        </div>
+      
     </div>
 
     <header class="header" contenteditable="true" data-classes="header">
@@ -221,7 +279,7 @@
                 </ul>
             </nav>
             <div class="header__cta" contenteditable="true" data-classes="header__cta">
-                <a href="https://github.com/your-repo/m.css" class="button button--primary text-small" contenteditable="true" data-classes="button button--primary text-small">GitHub</a>
+                <a href="" class="button button--primary text-small download-button" contenteditable="true" data-classes="button button--primary text-small">Download CSS</a>
             </div>
         </div>
     </header>
@@ -467,21 +525,18 @@
             }
 
             function findVariablesInCSS(classes) {
-                const variablesByClass = new Map(); // Map to store variables grouped by class
+                const variablesByClass = new Map();
 
-                // Helper function to extract variable names from a CSS value
                 function extractVariables(cssValue) {
                     const matches = cssValue.match(/var\((--[^,)]+)/g);
                     if (matches) {
-                        return matches.map(match => match.slice(4)); // Remove 'var('
+                        return matches.map(match => match.slice(4));
                     }
                     return [];
                 }
 
-                // Create regex patterns for each class
                 classes.forEach(className => {
                     const escapedClass = className.replace(/([.*+?^${}()|\[\]\\])/g, '\\$1');
-                    // Add word boundaries to match exact class names
                     const pattern = new RegExp(`\\.${escapedClass}(?:[^a-zA-Z0-9-_]|$)[^{]*{[^}]*}`, 'g');
                     
                     const matches = cssContent.match(pattern);
@@ -489,7 +544,6 @@
                         const classVariables = [];
                         
                         matches.forEach(rule => {
-                            // Extract property-value pairs
                             const declarations = rule.match(/[^{]*{([^}]*)}/)[1];
                             const properties = declarations.split(';');
                             
@@ -499,7 +553,9 @@
                                     if (property && value) {
                                         const vars = extractVariables(value);
                                         vars.forEach(varName => {
-                                            // Check if this variable is already added for this property
+                                            // Skip color variables
+                                            if (varName.startsWith('--color-')) return;
+                                            
                                             const exists = classVariables.some(v => 
                                                 v.property === property && 
                                                 v.variable === varName &&
@@ -534,6 +590,13 @@
             // Add this new function to handle variable overrides
             function handleVariableOverride(variable, value) {
                 document.documentElement.style.setProperty(variable, value);
+                // Update color dot if it's a main color
+                if (variable.startsWith('--color-')) {
+                    const dot = document.querySelector(`[data-variable="${variable}"]`).parentElement.querySelector('.color-dot');
+                    if (dot) {
+                        dot.style.background = value;
+                    }
+                }
             }
 
             function displayVariables(variablesByClass, filterClass = null) {
@@ -563,18 +626,25 @@
                     : classEntries;
 
                 for (const [className, variables] of filteredEntries) {
+                    // Filter out the main color variables
+                    const filteredVariables = variables.filter(v => 
+                        !['--color-black', '--color-spark', '--color-white'].includes(v.variable)
+                    );
+                    
+                    if (filteredVariables.length === 0) continue;
+
                     html.push(`
-                        <div class="class-section">
+                        <div class="class-section ${filterClass === className ? 'active-class' : ''}">
                             <h4 class="text-small" style="margin: var(--spacing-s) 0; color: var(--color-text-secondary)">
                                 ${className}
                             </h4>
                             <div class="variable-group">
-                                ${variables.map(({property, variable, computedValue, rule}) => `
+                                ${filteredVariables.map(({property, variable, computedValue, rule}) => `
                                     <div class="variable-item">
                                         <div>
-                                            <span>${property}: <span class="variable-name ellipsis">${variable}</span></span>
+                                            <span>${property}: <span class="variable-name">${variable}</span></span>
                                         </div>
-                                        <span class="variable-value ellipsis">${computedValue}</span>
+                                        <span class="variable-value">${computedValue}</span>
                                     </div>
                                 `).join('')}
                             </div>
@@ -588,13 +658,17 @@
                 const overridesSection = document.getElementById('variableOverrides');
                 const uniqueVariables = new Set();
                 
-                // Only include variables from filtered classes
+                // Only include variables from filtered classes, excluding main colors
                 filteredEntries.forEach(([_, variables]) => {
-                    variables.forEach(({variable}) => uniqueVariables.add(variable));
+                    variables.forEach(({variable}) => {
+                        if (!['--color-black', '--color-spark', '--color-white'].includes(variable)) {
+                            uniqueVariables.add(variable);
+                        }
+                    });
                 });
 
                 overridesSection.innerHTML = `
-                    <h4 class="text-small" style="margin: var(--spacing-m) 0 var(--spacing-s)">
+                    <h4 class="text-small text-color-secondary mono-font" style="margin: var(--spacing-m) 0 var(--spacing-s)">
                         ${filterClass ? `Override Variables for .${filterClass}` : 'Override Variables'}
                     </h4>
                     ${Array.from(uniqueVariables).map(variable => {
@@ -602,40 +676,22 @@
                             .getPropertyValue(variable).trim();
                         return `
                             <div class="override-control">
-                                <label class="text-small">${variable}</label>
-                                <div class="override-inputs">
-                                    <input type="text" 
-                                           value="${currentValue}"
-                                           data-variable="${variable}"
-                                           class="variable-input"
-                                           style="font-family: monospace">
-                                    ${variable.includes('color') ? `
-                                        <input type="color" 
-                                               value="${currentValue.startsWith('#') ? currentValue : '#000000'}"
-                                               data-variable="${variable}"
-                                               class="color-picker">
-                                    ` : ''}
-                                </div>
+                                <span class="variable-name mono-font" style="width: 100%;">${variable}</span>
+                                <input type="text" 
+                                       value="${currentValue}"
+                                       data-variable="${variable}"
+                                       class="variable-input mono-font">
                             </div>
                         `;
                     }).join('')}
                 `;
 
                 // Add event listeners for override inputs
-                document.querySelectorAll('.variable-input, .color-picker').forEach(input => {
+                document.querySelectorAll('.variable-input').forEach(input => {
                     input.addEventListener('change', (e) => {
                         const variable = e.target.dataset.variable;
                         const value = e.target.value;
                         handleVariableOverride(variable, value);
-                        
-                        // Sync text input and color picker if they exist
-                        if (e.target.type === 'color') {
-                            const textInput = document.querySelector(`.variable-input[data-variable="${variable}"]`);
-                            if (textInput) textInput.value = value;
-                        } else {
-                            const colorPicker = document.querySelector(`.color-picker[data-variable="${variable}"]`);
-                            if (colorPicker && value.startsWith('#')) colorPicker.value = value;
-                        }
                     });
                 });
             }
@@ -671,13 +727,22 @@
                     currentElement = currentElement.parentElement;
                 }
                 
+                // Add body if it has classes
+                if (document.body.className) {
+                    tree.unshift({
+                        tag: 'body',
+                        classes: document.body.className,
+                        isTarget: element === document.body
+                    });
+                }
+                
                 return tree;
             }
 
             function displayElementTree(tree) {
                 return tree.map((item, index) => {
                     const indent = `<span class="indent">__</span>`.repeat(index);
-                    const arrow = index > 0 ? '↳' : '';
+                    const arrow = index > 0 ? '<span class="indent-arrow">↪︎</span>' : '';
                     const classes = item.classes 
                         ? ' ' + item.classes.split(' ')
                             .map(cls => `
@@ -760,6 +825,94 @@
 
             // Initial load
             loadCSSContent();
+
+            // Add arrow key functionality for numeric inputs
+            function handleArrowKeys(e) {
+                // Skip if it's a color input
+                if (e.target.matches('.color-input')) return;
+                
+                if (!e.target.matches('.variable-input')) return;
+                const value = e.target.value;
+                // Only process if the value contains numbers
+                if (!/\d/.test(value)) return;
+
+                const isShift = e.shiftKey;
+                const step = isShift ? 10 : 1;
+                
+                let newValue;
+                
+                if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    
+                    // Extract number and unit
+                    const match = value.match(/([-\d.]+)([a-z%]*)$/i);
+                    if (!match) return;
+                    
+                    const num = parseFloat(match[1]);
+                    const unit = match[2] || '';
+                    
+                    // Calculate new value
+                    newValue = e.key === 'ArrowUp' 
+                        ? num + step 
+                        : num - step;
+                    
+                    // Apply the change
+                    e.target.value = newValue + unit;
+                    
+                    // Trigger the change
+                    const variable = e.target.dataset.variable;
+                    handleVariableOverride(variable, e.target.value);
+                }
+            }
+
+            // Add keydown event listener for arrow keys
+            document.addEventListener('keydown', handleArrowKeys);
+
+            // Add download functionality
+            document.querySelector('.download-button').addEventListener('click', () => {
+                // Get the original CSS content
+                fetch('m.css')
+                    .then(response => response.text())
+                    .then(css => {
+                        // Replace the color variables with current values
+                        Object.entries(mainColors).forEach(([variable, _]) => {
+                            const currentValue = getComputedStyle(document.documentElement)
+                                .getPropertyValue(variable).trim();
+                            const regex = new RegExp(`(${variable}:\\s*)[^;]+`);
+                            css = css.replace(regex, `$1${currentValue}`);
+                        });
+
+                        // Create and trigger download
+                        const blob = new Blob([css], { type: 'text/css' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'm.css';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    });
+            });
+
+            // Add color input handlers
+            document.querySelectorAll('.color-input').forEach(input => {
+                // Handle Enter key
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const variable = e.target.dataset.variable;
+                        handleVariableOverride(variable, e.target.value);
+                        input.blur();
+                    }
+                });
+
+                // Handle focus out
+                input.addEventListener('focusout', (e) => {
+                    const variable = e.target.dataset.variable;
+                    handleVariableOverride(variable, e.target.value);
+                });
+            });
         });
     </script>
 </body>

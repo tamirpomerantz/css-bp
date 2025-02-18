@@ -67,8 +67,8 @@ html {
     --radius-full: 9999px;
 
     /* Transitions */
-    --transition-fast: 150ms ease;
-    --transition-normal: 250ms ease;
+    --transition-fast: all 150ms ease;
+    --transition-normal: all 250ms ease;
 }
 
 
