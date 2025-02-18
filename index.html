@@ -101,8 +101,7 @@
         }
 
         .variables-list {
-            font-size: var(--font-size-small);
-            color: var(--color-text-lite);
+     
         }
 
         .variable-item {
@@ -121,6 +120,7 @@
 
         .variable-value {
             color: var(--color-text-secondary);
+            text-align: right;
         }
 
         .variable-overrides {
@@ -139,17 +139,22 @@
         }
 
         .variables-list {
-            background-color: color-mix(in srgb, var(--color-base) 9%, transparent);;
+            background-color: color-mix(in srgb, var(--color-base) 9%, transparent);
+            font-size: var(--font-size-small);
+            color: var(--color-text-lite);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-s);
         }
 
         .variable-overrides {
-            background-color: color-mix(in srgb, var(--color-base) 5%, transparent);;
+            background-color: color-mix(in srgb, var(--color-base) 5%, transparent);
         }
         .main-colors {
-            background-color: color-mix(in srgb, var(--color-base) 0%, transparent);;
+            background-color: color-mix(in srgb, var(--color-base) 0%, transparent);
         }
         .class-section {
-            padding-bottom: var(--spacing-m);
+            /* padding-bottom: var(--spacing-m); */
         }
         .padding-bottom {
             padding-bottom: var(--spacing-s);
@@ -237,12 +242,15 @@
 
         .clickable-tag {
             cursor: pointer;
-            transition: all var(--transition-fast);
+            transition: var(--transition-fast);
+            outline: 1px solid transparent
+
         }
 
         .clickable-tag:hover {
-            background: var(--color-primary);
-            color: var(--color-text-negative);
+            /* background: var(--color-primary); */
+            /* color: var(--color-text-negative); */
+            outline: 1px solid var(--color-primary);
         }
 
         .clickable-tag.active {
@@ -407,14 +415,6 @@
                 <p class="footer__tagline text-small">Simple. Powerful. Customizable.</p>
             </div>
             <div class="footer__links">
-                <div class="footer__column">
-                    <h4 class="footer__heading text-small">Documentation</h4>
-                    <ul class="footer__list">
-                        <li><a href="#" class="footer__link text-small">Installation</a></li>
-                        <li><a href="#" class="footer__link text-small">Components</a></li>
-                        <li><a href="#" class="footer__link text-small">Utilities</a></li>
-                    </ul>
-                </div>
                 <div class="footer__column">
                     <h4 class="footer__heading text-small">Contact</h4>
                     <ul class="footer__list">
@@ -665,16 +665,24 @@
             }
 
             function displayVariables(variablesByClass, filterClass = null) {
-                if (variablesByClass.size === 0) {
-                    variablesDisplay.innerHTML = '<div class="variable-item">No CSS variables found on this element</div>';
-                    return;
+                const html = [];
+
+                console.log(variablesByClass.get(filterClass));
+                console.log(filterClass);
+                if ((variablesByClass && filterClass && !(variablesByClass.get(filterClass)))) {
+
+                        console.log('no vars');
+                    html.push(`<div class="text-small text-color-secondary mono-font">
+                        ${filterClass ? 
+                            `No CSS variables found for class "${filterClass}"` : 
+                            'No CSS variables found on this element'}
+                    </div>`);
                 }
 
                 // Store current state
                 currentVariablesByClass = variablesByClass;
                 activeFilter = filterClass;
 
-                const html = [];
                 
                 // Create override controls section if it doesn't exist
                 if (!document.getElementById('variableOverrides')) {
@@ -733,23 +741,26 @@
                 });
 
                 overridesSection.innerHTML = `
-                    <h4 class="text-small text-color-secondary mono-font padding-bottom">
-                        ${filterClass ? `Override Variables for .${filterClass}` : 'Override Variables'}
-                    </h4>
-                    ${Array.from(uniqueVariables).map(variable => {
-                        // Get the current value from the computed style
-                        const currentValue = getComputedStyle(document.documentElement)
-                            .getPropertyValue(variable).trim();
-                        return `
-                            <div class="override-control">
-                                <span class="variable-name mono-font" style="width: 100%;">${variable}</span>
-                                <input type="text" 
-                                       value="${currentValue}"
-                                       data-variable="${variable}"
-                                       class="variable-input mono-font">
-                            </div>
-                        `;
-                    }).join('')}
+                
+                    ${uniqueVariables.size === 0 ? 
+                        `<div class="text-small text-color-secondary mono-font">No Overrides</div>` :
+                        `    <h4 class="text-small text-color-secondary mono-font padding-bottom">
+                         Override Variables
+                    </h4>` + Array.from(uniqueVariables).map(variable => {
+                            // Get the current value from the computed style
+                            const currentValue = getComputedStyle(document.documentElement)
+                                .getPropertyValue(variable).trim();
+                            return `
+                                <div class="override-control">
+                                    <span class="variable-name mono-font" style="width: 100%;">${variable}</span>
+                                    <input type="text" 
+                                           value="${currentValue}"
+                                           data-variable="${variable}"
+                                           class="variable-input mono-font">
+                                </div>
+                            `;
+                        }).join('')
+                    }
                 `;
 
                 // Add event listeners for override inputs
