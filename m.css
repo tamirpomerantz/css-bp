@@ -29,7 +29,7 @@ html {
     --color-text-hover: color-mix(in srgb, var(--color-base) 80%, transparent);
     --color-text-negative: color-mix(in srgb, var(--color-negative-base) 90%, transparent);
     --color-text-secondary: color-mix(in srgb, var(--color-base) 60%, transparent);
-    --color-text-lite: color-mix(in srgb, var(--color-base) 25%, transparent);
+    --color-text-lite: color-mix(in srgb, var(--color-base) 35%, transparent);
 
     /* Typography */
     --font-primary: 'Satoshi', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -121,7 +121,7 @@ html {
         --color-text-hover: color-mix(in srgb, var(--color-base) 80%, transparent);
         --color-text-negative: color-mix(in srgb, var(--color-negative-base) 90%, transparent);
         --color-text-secondary: color-mix(in srgb, var(--color-base) 60%, transparent);
-        --color-text-lite: color-mix(in srgb, var(--color-base) 25%, transparent);
+        --color-text-lite: color-mix(in srgb, var(--color-base) 35%, transparent);
     }
 }
 
@@ -154,7 +154,7 @@ html {
         --color-text-hover: color-mix(in srgb, var(--color-base) 80%, transparent);
         --color-text-negative: color-mix(in srgb, var(--color-negative-base) 90%, transparent);
         --color-text-secondary: color-mix(in srgb, var(--color-base) 60%, transparent);
-        --color-text-lite: color-mix(in srgb, var(--color-base) 25%, transparent);
+        --color-text-lite: color-mix(in srgb, var(--color-base) 35%, transparent);
     }
 }
 

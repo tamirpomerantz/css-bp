@@ -11,7 +11,7 @@
             position: fixed;
             right: 0;
             top: 0;
-            width: 300px;
+            width: 450px;
             height: 100vh;
             background: var(--color-background);
             border-left: 1px solid var(--color-border);
@@ -96,7 +96,7 @@
 
         /* Update body margin to use CSS variable */
         body {
-            margin-right: var(--panel-width, 300px);
+            margin-right: var(--panel-width, 450px);
             transition: margin-right 0.1s ease;
         }
 
@@ -148,6 +148,12 @@
         .main-colors {
             background-color: color-mix(in srgb, var(--color-base) 0%, transparent);;
         }
+        .class-section {
+            padding-bottom: var(--spacing-m);
+        }
+        .padding-bottom {
+            padding-bottom: var(--spacing-s);
+        }
 
 
         .override-inputs {
@@ -191,6 +197,35 @@
             height: 12px;
             border-radius: 50%;
             border: 1px solid var(--color-border);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .color-dot input[type="color"] {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: 28px;
+            height: 28px;
+            border: none;
+            padding: 0;
+            background: none;
+            cursor: pointer;
+        }
+
+        .color-dot input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .color-dot input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 50%;
+        }
+
+        .color-dot input[type="color"]::-moz-color-swatch {
+            border: none;
+            border-radius: 50%;
         }
 
         .color-name {
@@ -248,19 +283,25 @@
             <div id="variablesDisplay" class="variables-list mono-font"></div>
         </div>
         <div class="main-colors">
-            <h4 class="text-small text-color-secondary mono-font" style="margin: var(--spacing-m) 0 var(--spacing-s)">Main Colors</h4>
+            <h4 class="text-small text-color-secondary mono-font padding-bottom">Main Colors</h4>
             <div class="color-control">
-                <div class="color-dot" style="background: var(--color-black)"></div>
+                <div class="color-dot">
+                    <input type="color" data-variable="--color-black" value="#010c0f">
+                </div>
                 <span class="color-name">--color-black</span>
                 <input type="text" data-variable="--color-black" class="color-input mono-font" value="#010c0f">
             </div>
             <div class="color-control">
-                <div class="color-dot" style="background: var(--color-spark)"></div>
+                <div class="color-dot">
+                    <input type="color" data-variable="--color-spark" value="#FB5010">
+                </div>
                 <span class="color-name">--color-spark</span>
                 <input type="text" data-variable="--color-spark" class="color-input mono-font" value="#FB5010">
             </div>
             <div class="color-control">
-                <div class="color-dot" style="background: var(--color-white)"></div>
+                <div class="color-dot">
+                    <input type="color" data-variable="--color-white" value="#FFFFFF">
+                </div>
                 <span class="color-name">--color-white</span>
                 <input type="text" data-variable="--color-white" class="color-input mono-font" value="#FFFFFF">
             </div>
@@ -386,6 +427,7 @@
             </div>
         </div>
     </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -444,7 +486,7 @@
             }
 
             // Initialize panel width CSS variable
-            document.documentElement.style.setProperty('--panel-width', '300px');
+            document.documentElement.style.setProperty('--panel-width', '450px');
             
             // Add mouse down event listener to panel
             panel.addEventListener('mousedown', initResize);
@@ -597,6 +639,29 @@
                         dot.style.background = value;
                     }
                 }
+
+                // Update the variables display without recreating inputs
+                if (currentVariablesByClass) {
+                    // Update the stored values in currentVariablesByClass
+                    for (const [_, variables] of currentVariablesByClass) {
+                        variables.forEach(v => {
+                            if (v.variable === variable) {
+                                v.computedValue = value;
+                                // Find and update the display value
+                                const variableItems = document.querySelectorAll('.variable-item');
+                                variableItems.forEach(item => {
+                                    const nameElement = item.querySelector('.variable-name');
+                                    if (nameElement && nameElement.textContent === variable) {
+                                        const valueElement = item.querySelector('.variable-value');
+                                        if (valueElement) {
+                                            valueElement.textContent = value;
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
             }
 
             function displayVariables(variablesByClass, filterClass = null) {
@@ -635,7 +700,7 @@
 
                     html.push(`
                         <div class="class-section ${filterClass === className ? 'active-class' : ''}">
-                            <h4 class="text-small" style="margin: var(--spacing-s) 0; color: var(--color-text-secondary)">
+                            <h4 class="text-small" style="color: var(--color-text-secondary)">
                                 ${className}
                             </h4>
                             <div class="variable-group">
@@ -668,10 +733,11 @@
                 });
 
                 overridesSection.innerHTML = `
-                    <h4 class="text-small text-color-secondary mono-font" style="margin: var(--spacing-m) 0 var(--spacing-s)">
+                    <h4 class="text-small text-color-secondary mono-font padding-bottom">
                         ${filterClass ? `Override Variables for .${filterClass}` : 'Override Variables'}
                     </h4>
                     ${Array.from(uniqueVariables).map(variable => {
+                        // Get the current value from the computed style
                         const currentValue = getComputedStyle(document.documentElement)
                             .getPropertyValue(variable).trim();
                         return `
@@ -869,13 +935,19 @@
             document.addEventListener('keydown', handleArrowKeys);
 
             // Add download functionality
-            document.querySelector('.download-button').addEventListener('click', () => {
+            document.querySelector('.download-button').addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
                 // Get the original CSS content
                 fetch('m.css')
                     .then(response => response.text())
                     .then(css => {
+                        // Get all color variables
+                        const colorVars = ['--color-black', '--color-spark', '--color-white'];
+                        
                         // Replace the color variables with current values
-                        Object.entries(mainColors).forEach(([variable, _]) => {
+                        colorVars.forEach(variable => {
                             const currentValue = getComputedStyle(document.documentElement)
                                 .getPropertyValue(variable).trim();
                             const regex = new RegExp(`(${variable}:\\s*)[^;]+`);
@@ -893,16 +965,39 @@
                         document.body.removeChild(a);
                         URL.revokeObjectURL(url);
                     });
+
+                // Process the click for element selection
+                processElementClick(e.target);
             });
 
-            // Add color input handlers
+            // Add color picker handlers
+            document.querySelectorAll('.color-dot input[type="color"]').forEach(input => {
+                input.addEventListener('input', (e) => {
+                    const variable = e.target.dataset.variable;
+                    const value = e.target.value.toUpperCase();
+                    handleVariableOverride(variable, value);
+                    // Update the text input as well
+                    const textInput = document.querySelector(`input[type="text"][data-variable="${variable}"]`);
+                    if (textInput) {
+                        textInput.value = value;
+                    }
+                });
+            });
+
+            // Add text input handlers for colors
             document.querySelectorAll('.color-input').forEach(input => {
                 // Handle Enter key
                 input.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') {
                         e.preventDefault();
                         const variable = e.target.dataset.variable;
-                        handleVariableOverride(variable, e.target.value);
+                        const value = e.target.value.toUpperCase();
+                        handleVariableOverride(variable, value);
+                        // Update the color picker as well
+                        const colorPicker = document.querySelector(`input[type="color"][data-variable="${variable}"]`);
+                        if (colorPicker) {
+                            colorPicker.value = value;
+                        }
                         input.blur();
                     }
                 });
@@ -910,9 +1005,42 @@
                 // Handle focus out
                 input.addEventListener('focusout', (e) => {
                     const variable = e.target.dataset.variable;
-                    handleVariableOverride(variable, e.target.value);
+                    const value = e.target.value.toUpperCase();
+                    handleVariableOverride(variable, value);
+                    // Update the color picker as well
+                    const colorPicker = document.querySelector(`input[type="color"][data-variable="${variable}"]`);
+                    if (colorPicker) {
+                        colorPicker.value = value;
+                    }
                 });
             });
+
+            // Add this helper function for the :contains selector
+            function addContainsSelector() {
+                if (!jQuery) {
+                    // Pure JS implementation of contains selector
+                    if (!Element.prototype.matches) {
+                        Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+                    }
+                    const contains = (selector, text) => {
+                        const elements = document.querySelectorAll(selector);
+                        return Array.from(elements).filter(element => element.textContent.includes(text));
+                    };
+                    document.querySelector = ((originalFn) => {
+                        return function(selector) {
+                            if (selector.includes(':contains')) {
+                                const [elementSelector, containsText] = selector.split(':contains');
+                                const text = containsText.slice(2, -2); // Remove parentheses and quotes
+                                return contains(elementSelector, text)[0];
+                            }
+                            return originalFn.call(document, selector);
+                        };
+                    })(document.querySelector);
+                }
+            }
+
+            // Call this when the page loads
+            addContainsSelector();
         });
     </script>
 </body>
