@@ -387,11 +387,13 @@ select:focus {
     outline: 1px solid var(--color-primary);
 }
 
-.input-l {
+select.input-l, input[type="text"].input-l, input[type="password"].input-l, input[type="email"].input-l, input[type="number"].input-l, input[type="tel"].input-l, input[type="search"].input-l, input[type="url"].input-l, input[type="date"].input-l, input[type="datetime-local"].input-l, input[type="month"].input-l, input[type="time"].input-l, input[type="week"].input-l 
+{
     padding: var(--spacing-s) var(--spacing-m);
     border-radius: var(--radius-m);
     font-size: var(--font-size-base);
     line-height: var(--line-height-text);
 }
+
 
 /* TODO: dropdowns, radios and checkboxes icons */
