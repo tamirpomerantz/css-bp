@@ -345,12 +345,13 @@ input[type="text"], input[type="password"], input[type="email"], input[type="num
     border: none;
     outline: 1px solid var(--color-border);
     border-radius: var(--radius-m);
-    padding: var(--spacing-s) var(--spacing-m);
-    font-size: var(--font-size-base);
+    padding: var(--spacing-xs) var(--spacing-s);
+    font-size: var(--font-size-small);
     line-height: var(--line-height-text);
     background-color: var(--color-background-alt);
     font-family: var(--font-primary);
     color: var(--color-text);
+    transition: var(--transition-fast);
 }
 
 input[type="text"]::placeholder, input[type="password"]::placeholder, input[type="email"]::placeholder, input[type="number"]::placeholder, input[type="tel"]::placeholder, input[type="search"]::placeholder, input[type="url"]::placeholder, input[type="date"]::placeholder, input[type="datetime-local"]::placeholder, input[type="month"]::placeholder, input[type="time"]::placeholder, input[type="week"]::placeholder {
@@ -373,7 +374,7 @@ select {
     border: none;
     border-radius: var(--radius-m);
     padding: var(--spacing-s) var(--spacing-m);
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-small);
     line-height: var(--line-height-text);
     background-color: var(--color-background-alt);
     color: var(--color-text);
@@ -384,6 +385,13 @@ select:hover {
 }
 select:focus {
     outline: 1px solid var(--color-primary);
+}
+
+.input-l {
+    padding: var(--spacing-s) var(--spacing-m);
+    border-radius: var(--radius-m);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-text);
 }
 
 /* TODO: dropdowns, radios and checkboxes icons */
