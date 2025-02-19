@@ -119,7 +119,7 @@ zero state show all variables
 
         .variable-name {
             color: var(--color-primary);
-            font-family: monospace;
+            /* font-family: monospace; */
             font-size: var(--font-size-small);
         }
 
@@ -241,7 +241,7 @@ zero state show all variables
         .color-name {
             flex: 1;
             color: var(--color-primary);
-            font-family: monospace;
+            /* font-family: monospace; */
             font-size: var(--font-size-small);
         }
 
@@ -301,21 +301,21 @@ zero state show all variables
                 <div class="color-dot">
                     <input type="color" data-variable="--color-black" value="#010c0f">
                 </div>
-                <span class="color-name">--color-black</span>
+                <span class="color-name mono-font">--color-black</span>
                 <input type="text" data-variable="--color-black" class="color-input mono-font" value="#010c0f">
             </div>
             <div class="color-control">
                 <div class="color-dot">
                     <input type="color" data-variable="--color-spark" value="#FB5010">
                 </div>
-                <span class="color-name">--color-spark</span>
+                <span class="color-name mono-font">--color-spark</span>
                 <input type="text" data-variable="--color-spark" class="color-input mono-font" value="#FB5010">
             </div>
             <div class="color-control">
                 <div class="color-dot">
                     <input type="color" data-variable="--color-white" value="#FFFFFF">
                 </div>
-                <span class="color-name">--color-white</span>
+                <span class="color-name mono-font">--color-white</span>
                 <input type="text" data-variable="--color-white" class="color-input mono-font" value="#FFFFFF">
             </div>
         </div>
@@ -324,7 +324,7 @@ zero state show all variables
 
     <header class="header" contenteditable="true" data-classes="header">
         <div class="container header__container" contenteditable="true" data-classes="container header__container">
-            <a href="/" class="header__logo all-classes" contenteditable="true" data-classes="header__logo all-classes">m.css</a>
+            <a href="/" class="header__logo" contenteditable="true" data-classes="header__logo">m.css</a>
             <nav class="header__nav" contenteditable="true" data-classes="header__nav">
                 <ul class="header__nav-list" contenteditable="true" data-classes="header__nav-list">
                     <li><a href="#features" class="button button--link text-small" contenteditable="true" data-classes="button button--link text-small">Features</a></li>
@@ -537,7 +537,69 @@ zero state show all variables
                 }
             }
 
-            // Load CSS and then process click
+            // Add close button styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .close-button {
+                    position: absolute;
+                    top: var(--spacing-m);
+                    right: var(--spacing-m);
+                    width: 24px;
+                    height: 24px;
+                    border-radius: var(--radius-s);
+                    background: var(--color-secondary);
+                    border: none;
+                    cursor: pointer;
+                    display: none;
+                    align-items: center;
+                    justify-content: center;
+                    color: var(--color-text);
+                    font-size: var(--font-size-base);
+                    transition: var(--transition-fast);
+                }
+                .close-button:hover {
+                    background: var(--color-secondary-hover);
+                }
+                .close-button.visible {
+                    display: flex;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Add close button to panel
+            const closeButton = document.createElement('button');
+            closeButton.className = 'close-button';
+            closeButton.innerHTML = '×';
+            closeButton.title = 'Show all variables';
+            panel.appendChild(closeButton);
+
+            // Function to show all variables
+            async function showAllVariables() {
+                if (!cssLoaded) {
+                    await loadCSSContent();
+                }
+                
+                // Add instruction message to element tree
+                elementTree.innerHTML = `
+                    <div class="text-small text-color-secondary mono-font" style="text-align: center;">
+                        Click on any element to inspect
+                    </div>`;
+                
+                // Get variables from .all-classes
+                const allClassesVariables = findVariablesInCSS(['all-classes']);
+                displayVariables(allClassesVariables);
+                
+                // Hide close button
+                closeButton.classList.remove('visible');
+            }
+
+            // Add click handler for close button
+            closeButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showAllVariables();
+            });
+
+            // Modify processElementClick to show close button
             async function processElementClick(target) {
                 if (!cssLoaded) {
                     await loadCSSContent();
@@ -546,11 +608,13 @@ zero state show all variables
                 // Get element tree
                 const tree = getElementTree(target);
                 elementTree.innerHTML = displayElementTree(tree);
-                console.log(target);
                 
                 // Get and display CSS variables
                 const variables = getComputedVariables(target);
                 displayVariables(variables);
+                
+                // Show close button
+                closeButton.classList.add('visible');
             }
 
             function getAllClassesForElement(element) {
@@ -908,8 +972,10 @@ zero state show all variables
                 }
             });
 
-            // Initial load
-            loadCSSContent();
+            // Initial load - show all variables
+            loadCSSContent().then(() => {
+                showAllVariables();
+            });
 
             // Add arrow key functionality for numeric inputs
             function handleArrowKeys(e) {
