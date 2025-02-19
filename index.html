@@ -1,3 +1,8 @@
+<!-- 
+TODO:
+zero state show all variables
+ -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -319,7 +324,7 @@
 
     <header class="header" contenteditable="true" data-classes="header">
         <div class="container header__container" contenteditable="true" data-classes="container header__container">
-            <a href="/" class="header__logo" contenteditable="true" data-classes="header__logo">m.css</a>
+            <a href="/" class="header__logo all-classes" contenteditable="true" data-classes="header__logo all-classes">m.css</a>
             <nav class="header__nav" contenteditable="true" data-classes="header__nav">
                 <ul class="header__nav-list" contenteditable="true" data-classes="header__nav-list">
                     <li><a href="#features" class="button button--link text-small" contenteditable="true" data-classes="button button--link text-small">Features</a></li>
@@ -509,6 +514,7 @@
                     cssContent = contents.join('\n');
                     cssLoaded = true;
                     console.log('CSS loaded successfully');
+                    console.log(cssContent);
                 } catch (error) {
                     console.error('Error loading CSS:', error);
                     // Fallback: try to get styles from document
@@ -526,8 +532,8 @@
                     
                     if (cssContent) {
                         cssLoaded = true;
-                        console.log('CSS loaded from document stylesheets');
                     }
+                   
                 }
             }
 
@@ -540,6 +546,7 @@
                 // Get element tree
                 const tree = getElementTree(target);
                 elementTree.innerHTML = displayElementTree(tree);
+                console.log(target);
                 
                 // Get and display CSS variables
                 const variables = getComputedVariables(target);

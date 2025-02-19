@@ -168,7 +168,6 @@ html {
   }
   
 
-
 /* Reset & Base Styles */
 * {
     margin: 0;
@@ -302,4 +301,38 @@ body {
     background-color: var(--color-secondary-hover);
 }
 
+
+.all-classes {
+   placeholder: var(--spacing-s);
+   placeholder: var(--spacing-m);
+   placeholder: var(--spacing-l);
+   placeholder: var(--spacing-xl);
+   placeholder: var(--spacing-2xl);
+    placeholder:var(--font-primary);
+    placeholder:var(--font-size-title);
+    placeholder:var(--font-size-large);
+    placeholder:var(--font-size-base);
+    placeholder:var(--font-size-small);
+    placeholder:var(--font-size-button);
+    placeholder:var(--font-size-button-xl);    
+    placeholder:var(--letter-spacing-tight);
+    placeholder:var(--letter-spacing-normal);
+    placeholder:var(--line-height-text);
+    placeholder:var(--line-height-title);
+    placeholder:var(--spacing-xs);
+    placeholder:var(--spacing-s);
+    placeholder:var(--spacing-m);
+    placeholder:var(--spacing-l);
+    placeholder:var(--spacing-xl);
+    placeholder:var(--spacing-2xl);
+    placeholder:var(--container-width);
+    placeholder:var(--container-padding);
+    placeholder:var(--radius-s);
+    placeholder:var(--radius-m);
+    placeholder:var(--radius-l);
+    placeholder:var(--radius-full);
+    placeholder:var(--transition-fast);
+    placeholder:var(--transition-normal);
+    padding: 0;
+}
 /* TODO: inputs, dropdowns, radios and checkboxes icons */
