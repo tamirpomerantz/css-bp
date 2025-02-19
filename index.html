@@ -706,9 +706,10 @@ zero state show all variables
                     : classEntries;
 
                 for (const [className, variables] of filteredEntries) {
-                    // Filter out the main color variables
+                    // Filter out the main color variables and placeholder properties
                     const filteredVariables = variables.filter(v => 
-                        !['--color-black', '--color-spark', '--color-white'].includes(v.variable)
+                        !['--color-black', '--color-spark', '--color-white'].includes(v.variable) &&
+                        v.property !== 'placeholder'
                     );
                     
                     if (filteredVariables.length === 0) continue;
@@ -738,9 +739,9 @@ zero state show all variables
                 const overridesSection = document.getElementById('variableOverrides');
                 const uniqueVariables = new Set();
                 
-                // Only include variables from filtered classes, excluding main colors
+                // Include both regular and placeholder variables in overrides
                 filteredEntries.forEach(([_, variables]) => {
-                    variables.forEach(({variable}) => {
+                    variables.forEach(({variable, property}) => {
                         if (!['--color-black', '--color-spark', '--color-white'].includes(variable)) {
                             uniqueVariables.add(variable);
                         }
