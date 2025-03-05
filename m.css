@@ -27,7 +27,7 @@ html {
 
     /* Typography */
     --font-primary: 'Satoshi', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-mono: "JetBrains Mono", monospace;
     --font-size-title: 64px;
     --font-size-large: 40px;
     --font-size-base: 20px;
@@ -234,7 +234,7 @@ body {
     justify-content: center;
     padding: var(--spacing-s) var(--spacing-m);
     border-radius: var(--radius-m);
-    font-weight: 500;
+    font-weight: var(--font-medium);
     font-family: var(--font-primary);
     transition: all var(--transition-fast);
     cursor: pointer;
@@ -307,7 +307,7 @@ body {
     border-radius: var(--radius-s);
     line-height: var(--button-text-height);
     font-size: var(--font-size-small);
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: var(--spacing-s);
 }

@@ -9,6 +9,9 @@ zero state show all variables
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>m.css - Minimalist CSS Framework</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="page.css">
     <link rel="stylesheet" href="m.css">
     <style>
@@ -279,6 +282,12 @@ zero state show all variables
             <div id="variablesDisplay" class="variables-list mono-font"></div>
         </div>
         <div class="main-colors">
+            <h4 class="text-small text-color-secondary mono-font padding-bottom">Font Selection</h4>
+            <div class="font-control padding-bottom">
+                <select id="fontSelector" class="font-select mono-font" style="width: 100%;">
+                </select>
+            </div>
+            
             <h4 class="text-small text-color-secondary mono-font padding-bottom">Main Colors</h4>
             <div class="color-control">
                 <div class="color-dot">
@@ -325,9 +334,9 @@ zero state show all variables
         <section class="hero" contenteditable="true" data-classes="hero">
             <div class="container hero__container" contenteditable="true" data-classes="container hero__container">
                 <div class="hero__content" contenteditable="true" data-classes="hero__content">
-                    <h3 class="text-small text-color-secondary" contenteditable="true" data-classes="text-small text-color-secondary">Interactive CSS Framework</h3>
+                    <div class="m-tag" contenteditable="true" data-classes="text-small text-color-secondary">Interactive CSS Framework</div>
                     <h1 class="hero__title text-title-xl" contenteditable="true" data-classes="hero__title text-title-xl">Design Systems, Reimagined</h1>
-                    <p class="hero__subtitle text-title" contenteditable="true" data-classes="hero__subtitle text-title">Create your perfect CSS foundation with real-time customization. Edit variables, see live changes, and generate your ideal boilerplate in seconds.</p>
+                    <p class="hero__subtitle text-title" contenteditable="true" data-classes="hero__subtitle text-title">Create your perfect CSS foundation with real-time customization.</p>
                     <div class="hero__buttons" contenteditable="true" data-classes="hero__buttons">
                         <button class="button button--primary button--large text-small" contenteditable="true" data-classes="button button--primary button--large text-small">Start Customizing</button>
                         <button class="button button--ghost button--large text-small" contenteditable="true" data-classes="button button--ghost button--large text-small">Watch Demo</button>
@@ -420,125 +429,132 @@ zero state show all variables
     <script>
 
         const allFonts= [
-  {
+        {
     "Font Name": "Syne",
-    "Link": "https://fonts.google.com/specimen/Syne",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Syne:wght@200;300;400;500;600;700;800&display=swap');",
     "Foundry": "Bonjour Monde",
     "Weights/Axis": [200, 300, 400, 500, 600, 700, 800],
     "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Syne:wght@200;300;400;500;600;700;800&display=swap\" rel=\"stylesheet\">"
   },
   {
     "Font Name": "Inter",
-    "Link": "https://fonts.google.com/specimen/Inter",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');",
     "Foundry": "Rasmus Andersson",
     "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
     "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
   },
   {
     "Font Name": "Spline Sans",
-    "Link": "https://fonts.google.com/specimen/Spline+Sans",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap');",
     "Foundry": "Sorkin Type",
     "Weights/Axis": [300, 400, 500, 600, 700],
     "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap\" rel=\"stylesheet\">"
   },
   {
     "Font Name": "Public Sans",
-    "Link": "https://fonts.google.com/specimen/Public+Sans",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');",
     "Foundry": "U.S. Web Design System",
     "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
     "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
   },
   {
     "Font Name": "Plus Jakarta Sans",
-    "Link": "https://fonts.google.com/specimen/Plus+Jakarta+Sans",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');",
     "Foundry": "Tokotype",
     "Weights/Axis": [200, 300, 400, 500, 600, 700, 800],
     "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap\" rel=\"stylesheet\">"
   },
   {
     "Font Name": "Montserrat",
-    "Link": "https://fonts.google.com/specimen/Montserrat",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');",
     "Foundry": "Julieta Ulanovsky",
     "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
     "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
   },
   {
     "Font Name": "DM Sans",
-    "Link": "https://fonts.google.com/specimen/DM+Sans",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');",
     "Foundry": "Colophon Foundry",
     "Weights/Axis": [400, 500, 700],
     "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap\" rel=\"stylesheet\">"
   },
   {
     "Font Name": "Poppins",
-    "Link": "https://fonts.google.com/specimen/Poppins",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');",
     "Foundry": "Indian Type Foundry",
     "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
     "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
   },
   {
     "Font Name": "Figtree",
-    "Link": "https://fonts.google.com/specimen/Figtree",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap');",
     "Foundry": "Eric Trine",
     "Weights/Axis": [300, 400, 500, 600, 700],
     "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap\" rel=\"stylesheet\">"
   },
   {
     "Font Name": "Manrope",
-    "Link": "https://fonts.google.com/specimen/Manrope",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');",
     "Foundry": "Mikhail Sharanda",
     "Weights/Axis": [200, 300, 400, 500, 600, 700, 800],
     "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap\" rel=\"stylesheet\">"
-  },
-  {
+  },{
     "Font Name": "Host Grotesk",
     "Link": "https://fonts.google.com/specimen/Host+Grotesk",
     "Foundry": "Unknown",
     "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
-    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@100;200;300;400;500;600;700;800;900&display=swap');"
   },
   {
     "Font Name": "Geist",
     "Link": "https://fonts.google.com/specimen/Geist",
     "Foundry": "Vercel",
     "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
-    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap');"
   },
   {
     "Font Name": "Outfit",
     "Link": "https://fonts.google.com/specimen/Outfit",
     "Foundry": "Rodrigo Fuenzalida",
     "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
-    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');"
   },
   {
     "Font Name": "Mona Sans",
     "Link": "https://fonts.google.com/specimen/Mona+Sans",
     "Foundry": "GitHub",
     "Weights/Axis": [200, 300, 400, 500, 600, 700, 800, 900],
-    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Mona+Sans:wght@200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Mona+Sans:wght@200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Mona+Sans:wght@200;300;400;500;600;700;800;900&display=swap');"
   },
   {
     "Font Name": "Prompt",
     "Link": "https://fonts.google.com/specimen/Prompt",
     "Foundry": "Cadson Demak",
     "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
-    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Prompt:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Prompt:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@100;200;300;400;500;600;700;800;900&display=swap');"
   },
   {
     "Font Name": "Onest",
     "Link": "https://fonts.google.com/specimen/Onest",
     "Foundry": "Ndiscover",
     "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
-    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Onest:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Onest:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Onest:wght@100;200;300;400;500;600;700;800;900&display=swap');"
   },
   {
     "Font Name": "Archivo",
     "Link": "https://fonts.google.com/specimen/Archivo",
     "Foundry": "Omnibus-Type",
     "Weights/Axis": [400, 500, 600, 700],
-    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">"
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">",
+    "Import": "@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap');"
   }];
+
 
         document.addEventListener('DOMContentLoaded', () => {
             const panel = document.querySelector('.class-panel');
@@ -555,6 +571,60 @@ zero state show all variables
             let isResizing = false;
             let startX;
             let startWidth;
+
+
+
+
+        // Initialize font selector
+        function initializeFontSelector() {
+            const fontSelector = document.getElementById('fontSelector');
+            const fontPreview = document.getElementById('fontPreview');
+            const embedContainer = document.createElement('style');
+            embedContainer.id = 'fontEmbedContainer';
+            document.head.appendChild(embedContainer);
+
+            // Populate font selector with options
+            allFonts.forEach((font, index) => {
+                const option = document.createElement('option');
+                option.value = font["Font Name"];
+                option.textContent = font["Font Name"];
+                fontSelector.appendChild(option);
+                
+                // Set the default to the first option
+                if (index === 0) {
+                    fontSelector.value = option.value; // Set the first option as selected
+                    // Trigger the change event to apply the font
+                    embedContainer.textContent = font["Import"];
+                    
+                    // Update CSS variable using the existing override system
+                    const fontValue = `'${font["Font Name"]}', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`;
+                    handleVariableOverride('--font-primary', fontValue);
+                }
+            });
+
+            // Handle font selection
+            fontSelector.addEventListener('change', (e) => {
+                console.log("change - " + e.target.value);
+                const selectedFont = e.target.value;
+                if (!selectedFont) {
+                    fontPreview.style.display = 'none';
+                    return;
+                }
+
+                const fontData = allFonts.find(f => f["Font Name"] === selectedFont);
+                if (fontData) {
+                    // Add font embed code
+                    embedContainer.textContent = fontData["Import"];
+                    
+                    // Update CSS variable using the existing override system
+                    const fontValue = `'${selectedFont}', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`;
+                    handleVariableOverride('--font-primary', fontValue);
+
+                  
+                }
+            });
+        }
+
 
             function initResize(e) {
                 // Only start resize if clicking near the left edge
@@ -1124,6 +1194,7 @@ zero state show all variables
             // Add keydown event listener for arrow keys
             document.addEventListener('keydown', handleArrowKeys);
 
+            
             // Add download functionality
             document.querySelector('.download-button').addEventListener('click', (e) => {
                 e.preventDefault();
@@ -1133,15 +1204,46 @@ zero state show all variables
                 fetch('m.css')
                     .then(response => response.text())
                     .then(css => {
-                        // Get all color variables
-                        const colorVars = ['--color-black', '--color-spark', '--color-white'];
+                        // Get the selected font
+                        const fontSelector = document.getElementById('fontSelector');
+                        const selectedFont = fontSelector.value;
+                        const fontData = allFonts.find(f => f["Font Name"] === selectedFont);
+                        const fontImport = fontData ? fontData["Import"] : '';
+
+                        // Prepend the font import to the CSS
+                        css = fontImport + '\n' + css;
+
+                        // Get all important variables that might be overridden
+                        const importantVars = [
+                            // Colors
+                            '--color-black', '--color-spark', '--color-white',
+                            // Typography
+                            '--font-primary', '--font-mono',
+                            '--font-size-title', '--font-size-large', '--font-size-base', '--font-size-small',
+                            '--font-size-button', '--font-size-button-xl',
+                            '--letter-spacing-tight', '--letter-spacing-normal',
+                            '--line-height-text', '--line-height-title',
+                            // Spacing
+                            '--spacing-xs', '--spacing-s', '--spacing-m', '--spacing-l', '--spacing-xl', '--spacing-2xl',
+                            // Container
+                            '--container-width', '--container-padding',
+                            // Border Radius
+                            '--radius-s', '--radius-m', '--radius-l', '--radius-full',
+                            // Transitions
+                            '--transition-fast', '--transition-normal'
+                        ];
                         
-                        // Replace the color variables with current values
-                        colorVars.forEach(variable => {
-                            const currentValue = getComputedStyle(document.documentElement)
-                                .getPropertyValue(variable).trim();
-                            const regex = new RegExp(`(${variable}:\\s*)[^;]+`);
-                            css = css.replace(regex, `$1${currentValue}`);
+                        // Get computed styles
+                        const computedStyle = getComputedStyle(document.documentElement);
+                        
+                        // Replace all overridden variables
+                        importantVars.forEach(variable => {
+                            const currentValue = computedStyle.getPropertyValue(variable).trim();
+                            // Only replace if the variable has been overridden (exists in style attribute)
+                            if (document.documentElement.style.getPropertyValue(variable)) {
+                                const regex = new RegExp(`(${variable}:\\s*)[^;]+`);
+                                css = css.replace(regex, `$1${currentValue}`);
+                            }
                         });
 
                         // Create and trigger download
@@ -1231,6 +1333,9 @@ zero state show all variables
 
             // Call this when the page loads
             addContainsSelector();
+
+            // Initialize font selector
+            initializeFontSelector();
         });
     </script>
 </body>
