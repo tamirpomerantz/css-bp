@@ -418,6 +418,128 @@ zero state show all variables
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
+
+        const allFonts= [
+  {
+    "Font Name": "Syne",
+    "Link": "https://fonts.google.com/specimen/Syne",
+    "Foundry": "Bonjour Monde",
+    "Weights/Axis": [200, 300, 400, 500, 600, 700, 800],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Syne:wght@200;300;400;500;600;700;800&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "Inter",
+    "Link": "https://fonts.google.com/specimen/Inter",
+    "Foundry": "Rasmus Andersson",
+    "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "Spline Sans",
+    "Link": "https://fonts.google.com/specimen/Spline+Sans",
+    "Foundry": "Sorkin Type",
+    "Weights/Axis": [300, 400, 500, 600, 700],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "Public Sans",
+    "Link": "https://fonts.google.com/specimen/Public+Sans",
+    "Foundry": "U.S. Web Design System",
+    "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "Plus Jakarta Sans",
+    "Link": "https://fonts.google.com/specimen/Plus+Jakarta+Sans",
+    "Foundry": "Tokotype",
+    "Weights/Axis": [200, 300, 400, 500, 600, 700, 800],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "Montserrat",
+    "Link": "https://fonts.google.com/specimen/Montserrat",
+    "Foundry": "Julieta Ulanovsky",
+    "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "DM Sans",
+    "Link": "https://fonts.google.com/specimen/DM+Sans",
+    "Foundry": "Colophon Foundry",
+    "Weights/Axis": [400, 500, 700],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "Poppins",
+    "Link": "https://fonts.google.com/specimen/Poppins",
+    "Foundry": "Indian Type Foundry",
+    "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "Figtree",
+    "Link": "https://fonts.google.com/specimen/Figtree",
+    "Foundry": "Eric Trine",
+    "Weights/Axis": [300, 400, 500, 600, 700],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "Manrope",
+    "Link": "https://fonts.google.com/specimen/Manrope",
+    "Foundry": "Mikhail Sharanda",
+    "Weights/Axis": [200, 300, 400, 500, 600, 700, 800],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "Host Grotesk",
+    "Link": "https://fonts.google.com/specimen/Host+Grotesk",
+    "Foundry": "Unknown",
+    "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "Geist",
+    "Link": "https://fonts.google.com/specimen/Geist",
+    "Foundry": "Vercel",
+    "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "Outfit",
+    "Link": "https://fonts.google.com/specimen/Outfit",
+    "Foundry": "Rodrigo Fuenzalida",
+    "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "Mona Sans",
+    "Link": "https://fonts.google.com/specimen/Mona+Sans",
+    "Foundry": "GitHub",
+    "Weights/Axis": [200, 300, 400, 500, 600, 700, 800, 900],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Mona+Sans:wght@200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "Prompt",
+    "Link": "https://fonts.google.com/specimen/Prompt",
+    "Foundry": "Cadson Demak",
+    "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Prompt:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "Onest",
+    "Link": "https://fonts.google.com/specimen/Onest",
+    "Foundry": "Ndiscover",
+    "Weights/Axis": [100, 200, 300, 400, 500, 600, 700, 800, 900],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Onest:wght@100;200;300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">"
+  },
+  {
+    "Font Name": "Archivo",
+    "Link": "https://fonts.google.com/specimen/Archivo",
+    "Foundry": "Omnibus-Type",
+    "Weights/Axis": [400, 500, 600, 700],
+    "Embed Code": "<link href=\"https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">"
+  }];
+
         document.addEventListener('DOMContentLoaded', () => {
             const panel = document.querySelector('.class-panel');
             const classDisplay = document.getElementById('classDisplay');
